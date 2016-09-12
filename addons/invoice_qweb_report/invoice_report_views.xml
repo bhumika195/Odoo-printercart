@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <report 
+            id="account_invoices_custom"
+            model="account.invoice"
+            string="Qweb Invoices"
+            report_type="qweb-pdf"
+            name="invoice_qweb_report.report_invoice_custom"
+            file="invoice_qweb_report.report_invoice_custom"
+            attachment_use="True"
+            attachment="(object.state in ('open','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
+        />
+
+    </data>
+</openerp>

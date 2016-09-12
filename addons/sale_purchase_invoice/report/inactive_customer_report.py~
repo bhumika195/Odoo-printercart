@@ -1,0 +1,116 @@
+# -*- coding: utf-8 -*-
+##############################################################################
+#
+#    OpenERP, Open Source Management Solution
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as
+#    published by the Free Software Foundation, either version 3 of the
+#    License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
+
+from openerp.osv import osv
+from openerp.tools.translate import _
+from openerp.report import report_sxw
+from openerp.modules.module import get_module_resource
+
+import time
+from datetime import datetime
+import itertools
+import operator
+
+class sale_report(report_sxw.rml_parse):
+
+    def __init__(self, cr, uid, name, context=None):
+        super(sale_report, self).__init__(cr, uid, name, context=context)
+        self.grand_total = 0.0
+        self.localcontext.update({
+            'get_details':self.get_details,
+            'get_grand_total':self.get_grand_total,
+            })
+
+    def get_details(self, data):
+        print"\n\n get_details",data,type(data)
+        sale_pool = self.pool.get('sale.order')
+        sale_object_list = []
+        wizard_start_date = data['start_date']
+        wizard_end_date = data['end_date']
+        if data.get('user_id', False) and data.get('partner_id', False):
+            wizard_user_id = data['user_id'][0]
+            wizard_partner_id = data['partner_id'][0]
+            print"wizard_user_id",wizard_user_id
+            print"wizard_partner_id",wizard_partner_id
+            sale_ids = sale_pool.search(self.cr, self.uid, [('user_id','=',wizard_user_id),('partner_id','=',wizard_partner_id)])
+            print"sale_ids",sale_ids
+            if sale_ids:
+                for sale_obj in sale_pool.browse(self.cr, self.uid, sale_ids):
+                    date_order = sale_obj.date_order.split(" ")[0]
+                    if date_order >= wizard_start_date and date_order <= wizard_end_date:
+                        sale_object_list.append(sale_obj)
+                        self.grand_total += sale_obj.amount_total
+            print"sale_object_list",sale_object_list
+            return sale_object_list
+        elif data.get('user_id', False):
+            print"\n 2222"
+            wizard_user_id = data['user_id'][0]
+            print"wizard_user_id",wizard_user_id
+            sale_ids = sale_pool.search(self.cr, self.uid, [('user_id','=',wizard_user_id)])
+            print"sale_ids",sale_ids
+            if sale_ids:
+                for sale_obj in sale_pool.browse(self.cr, self.uid, sale_ids):
+                    date_order = sale_obj.date_order.split(" ")[0]
+                    if date_order >= wizard_start_date and date_order <= wizard_end_date:
+                        sale_object_list.append(sale_obj)
+                        self.grand_total += sale_obj.amount_total
+            print"sale_object_list",sale_object_list
+            return sale_object_list
+        elif data.get('partner_id', False):
+            print"\n3333"
+            wizard_partner_id = data['partner_id'][0]
+            print"wizard_partner_id",wizard_partner_id
+            sale_ids = sale_pool.search(self.cr, self.uid, [('partner_id','=',wizard_partner_id)])
+            print"sale_ids",sale_ids
+            if sale_ids:
+                for sale_obj in sale_pool.browse(self.cr, self.uid, sale_ids):
+                    date_order = sale_obj.date_order.split(" ")[0]
+                    if date_order >= wizard_start_date and date_order <= wizard_end_date:
+                        sale_object_list.append(sale_obj)
+                        self.grand_total += sale_obj.amount_total
+            print"sale_object_list",sale_object_list
+            return sale_object_list
+        else:
+            print"\n4444"
+            sale_ids = sale_pool.search(self.cr, self.uid, [])
+            print"sale_ids",sale_ids
+            if sale_ids:
+                for sale_obj in sale_pool.browse(self.cr, self.uid, sale_ids):
+                    date_order = sale_obj.date_order.split(" ")[0]
+                    if date_order >= wizard_start_date and date_order <= wizard_end_date:
+                        sale_object_list.append(sale_obj)
+                        self.grand_total += sale_obj.amount_total
+            print"sale_object_list",sale_object_list
+            return sale_object_list
+            
+            
+             
+
+    def get_grand_total(self):
+        return float("{:0.2f}".format(self.grand_total))
+
+class sale_report_template_id(osv.AbstractModel):
+    _name = 'report.crm_lead_customization.report_sale_order'
+    _inherit = 'report.abstract_report'
+    _template = 'crm_lead_customization.report_sale_order'
+    _wrapped_report_class = sale_report
+sale_report_template_id()
+
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

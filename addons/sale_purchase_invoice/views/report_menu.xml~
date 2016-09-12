@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <report id="report_customer_id" 
+        		string="Inactive Customers" 
+        		model="res.partner" 
+        		report_type="qweb-pdf" 
+        		file="sale_purchase_invoice.report_inactive_customer"
+            	name="sale_purchase_invoice.report_inactive_customer"
+            	menu='False'
+            	/>
+        
+    </data>
+</openerp>

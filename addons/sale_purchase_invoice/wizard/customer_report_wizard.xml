@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_customer_report_wizard" model="ir.ui.view">
+            <field name="name">customer.report.wizard</field>
+            <field name="model">customer.report.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Inactive Customer Report" version="8.0">
+					<group col='4' string="This report will print a list of inactive customers who had not placed a repeat order for 3 month or more.">
+						<field name='date' /><!--invisible='1'-->
+		        	</group>
+		            <footer>
+		                <button string="Print" name="print_customer_report" type="object" class="oe_highlight"/>
+		                or
+		                <button string="Cancel" class="oe_link" special="cancel" />
+		            </footer>
+               </form>
+            </field>
+        </record>
+        
+        <record id="action_inactive_customer_report_wizard" model="ir.actions.act_window">
+        	<field name="name">Inactive Customer</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">customer.report.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_customer_report_wizard"/>
+            <field name="target">new</field>
+            <field name="multi">True</field>
+        </record>
+
+		<menuitem id="menu_inactive_customer_report_root" 
+				  parent="base.menu_base_partner"
+        		  name="Customer Report"
+        		  sequence="1"/>
+        
+		<menuitem action="action_inactive_customer_report_wizard"
+				  id="menu_inactive_customer_report" 
+				  parent="menu_inactive_customer_report_root"
+        		  name="Inactive Customer "/>
+
+    </data>
+</openerp>

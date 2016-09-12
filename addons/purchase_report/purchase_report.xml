@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <report 
+            string="Request for Quotation custom" 
+            id="report_purchase_quotation_custom" 
+            model="purchase.order" 
+            report_type="qweb-pdf"
+            name="purchase_report.report_purchasequotation_custom" 
+            file="purchase_report.report_purchasequotation_custom"
+        />
+    </data>
+</openerp>

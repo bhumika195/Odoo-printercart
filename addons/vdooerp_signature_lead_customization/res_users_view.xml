@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+        <record model="ir.ui.view" id="view_res_users_inherit_signature_logo_form">
+            <field name="name">view.res.users.inherit.signature.logo.form</field>
+            <field name="model">res.users</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='lang']" position="before">
+                    <field name="signature_logo" widget="image" class="oe_avatar oe_left" />
+                </xpath>
+            </field>
+        </record>
+        
+         <record model="ir.ui.view" id="view_crm_lead_inherit_company_name_tree">
+            <field name="name">view.crm.lead.inherit.commpany.name.tree</field>
+            <field name="model">crm.lead</field>
+            <field name="type">tree</field>
+            <field name="inherit_id" ref="crm.crm_case_tree_view_leads"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='contact_name']" position="before">
+                    <field name="partner_name"  string="Company Name" />
+                </xpath>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="view_res_partner_inherit_account_number_form">
+            <field name="name">view.res.partner.inherit.account.number.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='credit_limit']" position="after">
+                    <field name="account_number"/>
+                </xpath>
+            </field>
+        </record>
+        
+         <record id="view_res_partner_inherit_search" model="ir.ui.view">
+            <field name="name">res.partner.inherit.search </field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter" />
+            <field name="arch" type="xml">      
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="account_number" string="Account Number"/>
+                </xpath>                                                 
+                </field>
+            </record>
+
+         <record id="view_product_product_category_inherit_search" model="ir.ui.view">
+            <field name="name">product.product.category.inherit.search </field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_search_form_view" />
+            <field name="arch" type="xml">      
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="categ_id" string="Category"/>
+                </xpath>                                                 
+                </field>
+            </record>
+    </data>
+</openerp>

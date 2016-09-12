@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="sequence_partner_type" model="ir.sequence.type">
+            <field name="name">Customer Account</field>
+            <field name="code">res.partner</field>
+        </record>
+        
+        <record id="sequence_partner" model="ir.sequence">
+            <field name="name">Customer Account</field>
+            <field name="code">res.partner</field>
+            <field name="padding">3</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+    </data>
+</openerp>

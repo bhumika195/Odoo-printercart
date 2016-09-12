@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+          <record id="res_partner_view_schedulebuttons" model="ir.ui.view">
+            <field name="name">res.partner.view.buttons</field>
+            <field name="model">res.partner</field>
+             <field eval="1" name="priority"/>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='buttons']" position="inside">
+                    <button name="%(crm.crm_case_categ_phone_outgoing0)d" type="action" string="Scheduled Calls"
+                        context="{'search_default_partner_id': active_id, 'default_partner_id' : [active_id]}"/>
+                </xpath>
+                <xpath expr="//field[@name='title']" position="after">
+                    <field name="last_order_date" />
+                    <field name="last_schedule_date" />
+                    <field name="default_contact_id" />
+                </xpath>
+<!--                label[@string="Address"]/div/field[@name='use_parent_address']" position="after">-->
+<!--                    <field name="is_default_contact" />-->
+<!--                </xpath>-->
+                     <xpath expr="//page[@string='Contacts']/field[@name='child_ids']/form[@string='Contact']//label[@for='use_parent_address']" position="after">
+                    <field name="is_default_contact" />
+                        
+                        <label for='is_default_contact'/>
+                     </xpath>
+            </field>
+        </record>
+        
+         
+         <record id="res_partner_view_scheduledtree" model="ir.ui.view">
+            <field name="name">res.partner.view.tree.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree" />
+<!--            <field name="domain">time.strftime(%d)+7</field>-->
+            <field name="arch" type="xml">
+<!--                Account number - Company name – Phone number – Main contact – Salesperson- Last order date – Last modified-->
+                 <field name="phone" position="attributes">
+                     <attribute name="invisible">True</attribute>
+                 </field>
+                <xpath expr="//field[@name='display_name']" position="before">
+                    <field name='account_number'  string="Account Number."/>
+                </xpath>
+                <field name="display_name" position="attributes">
+                    <attribute name="domain">[('is_company','=',True)]</attribute>
+                 </field>
+                <xpath expr="//field[@name='display_name']" position="after">
+<!--                    <field name="child_ids" nolabel="1" widget="one2many_list" string="company chields" mode="tree" context="{'name':name}"/>-->
+<!--                   <field eval="[(6,0,[name])]" name="child_ids" widget="one2many" />-->
+<!--                    <field name="child_ids" eval="[(6,0,[ref('base.name')])]" widget="one2many"/>-->
+<!--                        <field name="child_ids" context="{'default_name':active_id}" widget="one2many_list"/>-->
+                        
+                    <field name="phone"/>
+                </xpath>
+
+                <xpath expr="//field[@name='user_id']" position="attributes">
+                    <attribute name="invisible">False</attribute>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="category_id" string="Tag"/>
+                    <field name="last_order_date"/>
+                    <field name="last_schedule_date"/>
+<!--                    <field name="default_contact_id"  />-->
+<!--                    <field name="is_default_contact" string="Default Contact" />-->
+                </xpath>
+                
+            </field>
+        </record>
+        
+        
+       <record id="base.action_partner_form" model="ir.actions.act_window">
+            <field name="name">Customers</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="domain">[('customer','=',1)]</field>
+            <field name="context">{'default_customer':1, 'search_default_customer':1}</field>
+            <field name="search_view_id" ref="base.view_res_partner_filter"/>
+            <field name="filter" eval="True"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to add a contact in your address book.
+              </p><p>
+                OpenERP helps you easily track all activities related to
+                a customer: discussions, history of business opportunities,
+                documents, etc.
+              </p>
+            </field>
+        </record>
+        <record id="base.action_partner_tree_view1" model="ir.actions.act_window.view">
+            <field name="sequence" eval="0"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="base.view_partner_tree"/>
+            <field name="act_window_id" ref="base.action_partner_form"/>
+        </record>
+         <record id="base.action_partner_form_view2" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="base.view_partner_form"/>
+            <field name="act_window_id" ref="base.action_partner_form"/>
+        </record>
+        <record id="base.action_partner_form_view1" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">kanban</field>
+            <field name="view_id" ref="base.res_partner_kanban_view"/>
+            <field name="act_window_id" ref="base.action_partner_form"/>
+        </record>
+        
+        
+       <record id="base.action_partner_customer_form" model="ir.actions.act_window">
+            <field name="name">Customers</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="domain">[('customer','=',1)]</field>
+            <field name="context">{'default_customer':1, 'search_default_customer':1}</field>
+            <field name="filter" eval="True"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to add a contact in your address book.
+              </p><p>
+                OpenERP helps you easily track all activities related to
+                a customer: discussions, history of business opportunities,
+                documents, etc.
+              </p>
+            </field>
+        </record>
+        
+         <record id="base.action_partner_supplier_form" model="ir.actions.act_window">
+            <field name="name">Suppliers</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="context">{'search_default_supplier': 1,'default_customer': 0,'default_supplier': 1}</field>
+            <field name="filter" eval="True"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to add a contact in your address book.
+              </p><p>
+                OpenERP helps you easily track all activities related to
+                a supplier: discussions, history of purchases,
+                documents, etc.
+              </p>
+            </field>
+        </record>
+        
+       
+       <!--<record id="my_customized_board_mrp_manager_form" model="ir.ui.view">
+    <field name="name">board.mrp.manager.form</field>
+    <field name="model">board.board</field>
+    <field name="inherit_id" ref="mrp.board_mrp_manager_form" />
+    <field name="type">form</field>
+    <field name="arch" type="xml">
+        <action name="%(mrp.action_report_in_out_picking_tree)d" position="replace"/>
+    </field>
+<record>-->
+        
+<!--        <record id="base.action_partner_supplier_form" model="ir.actions.act_window">-->
+<!--            <field name="name">Suppliers</field>-->
+<!--            <field name="type">ir.actions.act_window</field>-->
+<!--            <field name="res_model">res.partner</field>-->
+<!--            <field name="view_type">form</field>-->
+<!--            <field name="domain">[]</field>-->
+<!--            <field name="view_mode">tree,form,kanban</field>-->
+<!--            <field name="context">{'search_default_supplier': 1,'default_customer': 0,'default_supplier': 1}</field>-->
+<!--            <field name="filter" eval="True"/>-->
+<!--            <field name="help" type="html">-->
+<!--              <p class="oe_view_nocontent_create">-->
+<!--                Click to add a contact in your address book.-->
+<!--              </p><p>-->
+<!--                OpenERP helps you easily track all activities related to-->
+<!--                a supplier: discussions, history of purchases,-->
+<!--                documents, etc.-->
+<!--              </p>-->
+<!--            </field>-->
+<!--        </record>-->
+        
+        
+        
+        
+    </data>
+</openerp>

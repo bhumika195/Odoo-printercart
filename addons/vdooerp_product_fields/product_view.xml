@@ -1,0 +1,85 @@
+<openerp>
+    <data>
+        <!-- Product Form View -->
+        <record id="product_product_inherited_form" model="ir.ui.view">
+            <field name="name">product.product.inherited.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <field name="ean13" position="after">
+                    <field name="page_yield"/>
+                    <field name="oem_part_num"/>
+                    <field name="lexmark_rebate_oem_part_num"/>
+                  <!--field name="euro_special_yield"/>
+                  <field name="euro_graphics_part"/>
+                  <field name="euro_graphics_price"/>
+                  <field name="engine_based"/-->
+                  
+                </field>
+                <field name="lst_price" position="after">
+                    <field name="dealer_price"/>
+                </field>
+                <xpath expr="//group[@name='general']" position="inside">
+                    <field name="currency_id"
+                           groups="base.group_product_price"/>
+                    <label for="cost_to_price"
+                           groups="base.group_product_price"/>
+                    <div>
+                        <field name="cost_to_price" class="oe_inline"
+                               readonly="1" groups="base.group_product_price"/>
+                        <button name="update_currency" type="object"
+                                class="oe_inline oe_link" string="update"
+                                groups="base.group_product_price"/>
+                    </div>
+                </xpath>
+
+                <field name="standard_price" position="attributes">
+                    <attribute name="groups">base.group_product_price
+                    </attribute>
+                </field>
+            </field>
+        </record>
+
+
+        <!-- Product Tree View -->
+        <record id="product_product_inherited_tree" model="ir.ui.view">
+            <field name="name">product.product.inherited.tree</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_product_tree_view"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="oem_part_num"/>
+                    <field name="page_yield"/>
+                </field>
+                <field name="uom_id" position="replace">
+
+                </field>
+                <field name="ean13" position="after">
+                    <field name="standard_price"/>
+                </field>
+                <field name="standard_price" position="after">
+                    <field name="dealer_price"/>
+                </field>
+                <field name="dealer_price" position="before">
+                    <field name="cost_to_price"
+                           groups="base.group_product_price"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- Product Search View in OEM Number -->
+        <record id="view_oem_part_num_filter" model="ir.ui.view">
+            <field name="name">product.product.search</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_search_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']"
+                       position="after">
+                    <field name="oem_part_num" string="OEM Number"/>
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</openerp>

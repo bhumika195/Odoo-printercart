@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="res_partner_view_scheduledtree" model="ir.ui.view">
+            <field name="name">res.partner.view.tree.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree"/>
+            <field name="arch" type="xml">
+                <!--Account No - Company name – contact person name - Tel - email-Salesperson - Tag  - Last order date  –  scheduled date -->
+                <field name="phone" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </field>
+                <xpath expr="//field[@name='display_name']" position="after">
+                    <field name="default_contact_name"/>
+                    <field name="phone"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+<template id="style">
+    body {
+        color: #000 !important;
+        word-wrap: break-word;
+    }
+    .border-black td {
+        border-top: 1px solid black !important;
+    }
+    .table-condensed > thead > tr > th {
+        border-bottom: 1px solid black !important;
+    }
+    .table-condensed > tbody > tr {
+        page-break-inside: avoid !important;
+    }
+    .zero_min_height {
+        min-height: 0px !important;
+    }
+    thead th { text-align:left; background: lightgrey;}
+
+    
+</template>
+
+<template id="external_layout_custom">
+    <!-- Multicompany -->
+    <t t-if="o and 'company_id' in o">
+        <t t-set="company" t-value="o.company_id"></t>
+    </t>
+    <t t-if="not o or not 'company_id' in o">
+        <t t-set="company" t-value="res_company"></t>
+    </t>
+
+    <t t-call="report_custom_header.external_layout_header_custom" />
+    <t t-raw="0" />
+    <t t-call="report_custom_header.external_layout_footer_custom"/>
+</template>
+
+<template id="external_layout_header_custom">
+    <div class="header">
+        <div class="row">
+            <div class="col-xs-3 pull-right">
+                <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo" style="max-height: 45px;"/>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="external_layout_footer_custom">
+    <div class="footer">
+        <div class="row text-left" style="border-top: 1px solid black;">
+            <div class="col-xs-3">
+                <div t-field="company.partner_id" 
+                    t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'
+                    />
+            </div>  
+            <div class="col-xs-5">
+                <span>Tax Reg. No. </span>
+                <p>Tel: <span t-field="company.phone"/></p>
+                <p>Fax: <span t-field="company.fax"/></p>
+                <p>Mail: <span t-field="company.website"/></p>
+            </div>
+            <div class="col-xs-3">
+                <span>Registered in England No.</span>
+                <p></p>
+            </div>
+
+        </div>
+    </div>      
+</template>
+
+</data>
+</openerp>

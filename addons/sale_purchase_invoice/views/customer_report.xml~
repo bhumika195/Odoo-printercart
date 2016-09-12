@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+<template id="report_inactive_customer">
+    <t t-call="report.external_layout">
+        <div class="page">
+            <div class="oe_structure"/>
+            <br/>
+			<p style="font-size:16px;">
+				<center>
+					<span><strong><h2>Inactive Customers Report</h2></strong></span>
+				</center>
+			</p>
+            <table class="table table-condensed">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Phone</th>
+						<th>Email</th>
+						<th>Salesperson</th>
+						<th>Order Date</th>
+					</tr>
+				</thead>
+				<tbody class="sale_tbody">
+					<tr t-foreach="get_inactive_customer_details(data['form'])" t-as="partner_obj">
+						<td>
+							<span t-field="partner_obj.name"/>
+						</td>
+						<td>
+							<span t-if="partner_obj.phone" t-field="partner_obj.phone"/>
+						</td>
+						<td >
+							<span t-if="partner_obj.email" t-field="partner_obj.email"/>
+						</td>
+						<td >
+							<span t-if="partner_obj.user_id" t-field="partner_obj.user_id.name"/>
+						</td>
+						<td >
+							<span t-if="partner_obj.last_order_date" t-field="partner_obj.last_order_date"/>
+							<!--span t-if="not partner_obj.last_order_date">Never Ordered</span-->
+							<!--span t-esc="get_last_order_date(partner_obj.name)"/-->
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+		</div>
+    </t>
+</template>
+
+	</data>
+</openerp>
